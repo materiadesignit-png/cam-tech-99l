@@ -1,0 +1,75 @@
+{
+ "name": "cam-build",
+ "private": true,
+ "build": {
+  "appId": "it.gammaarredi.camtech99l",
+  "productName": "CAM Tech 99L",
+  "directories": {
+   "app": "app",
+   "output": "dist"
+  },
+  "electronVersion": "22.3.27",
+  "win": {
+   "target": [
+    {
+     "target": "nsis",
+     "arch": [
+      "x64",
+      "ia32"
+     ]
+    },
+    {
+     "target": "portable",
+     "arch": [
+      "x64",
+      "ia32"
+     ]
+    },
+    {
+     "target": "zip",
+     "arch": [
+      "x64",
+      "ia32"
+     ]
+    }
+   ],
+   "signAndEditExecutable": false
+  },
+  "nsis": {
+   "oneClick": false,
+   "perMachine": false,
+   "allowElevation": false,
+   "allowToChangeInstallationDirectory": true,
+   "createDesktopShortcut": true,
+   "createStartMenuShortcut": true,
+   "shortcutName": "CAM Tech 99L",
+   "artifactName": "CAM-Tech-99L-${version}-Setup.exe"
+  },
+  "publish": null,
+  "portable": {
+   "artifactName": "CAM-Tech-99L-${version}-Portabile.exe"
+  },
+  "mac": {
+   "target": [
+    {
+     "target": "zip",
+     "arch": [
+      "x64",
+      "arm64"
+     ]
+    }
+   ],
+   "category": "public.app-category.productivity",
+   "identity": null
+  },
+  "artifactName": "CAM-Tech-99L-${version}-${os}-${arch}.${ext}"
+ },
+ "devDependencies": {
+  "electron": "22.3.27",
+  "electron-builder": "^24.13.3"
+ },
+ "scripts": {
+  "build": "python3 ../tools/build.py && electron-builder --win",
+  "start": "python3 ../tools/build.py && electron app"
+ }
+}

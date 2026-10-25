@@ -1,0 +1,12 @@
+const S = require('../src/shapes.js'); let pass = 0, fail = 0; const ok = (n, c, i) => { if (c) pass++; else { fail++; console.log('FAIL', n, i || ''); } };
+let t = S.text('HO', { font: 'sans', height: 50 });
+const ys = t.contours[0].map(p => p.y); ok('altezza maiuscola H 50 (la O sborda come in tipografia)', Math.abs(Math.max(...ys) - 50) < 0.6 && Math.abs(Math.min(...ys)) < 0.6, [Math.min(...ys), Math.max(...ys)]);
+ok('H 1 contorno, O 2 contorni', t.contours.length === 3, t.contours.length);
+let r = S.pocket(S.text('O', { font: 'sans', height: 50 }).contours, 6, 60);
+ok('svuotamento O: anelli', r.length >= 2, r.length);
+t = S.text('AB', { font: 'futural', height: 30 }); const y2 = t.contours.flat().map(p => p.y);
+ok('Hershey tratto singolo aperto', !t.closed && Math.abs(Math.max(...y2) - 30) < 1.5 && Math.min(...y2) > -1, [Math.min(...y2), Math.max(...y2)]);
+let d = S.pathD('M0 0 L10 0 L10 10 Z M20 0 h5 v5 h-5 z', 0.1); ok('path d: 2 chiusi', d.length === 2 && d[0].closed && d[1].pts.length === 4, JSON.stringify(d));
+d = S.pathD('M0 0 A10 10 0 0 1 20 0', 0.05); const mid = d[0].pts[Math.floor(d[0].pts.length / 2)]; ok('arco SVG raggio 10', Math.abs(Math.hypot(mid.x - 10, mid.y) - 10) < 0.05, JSON.stringify(mid));
+d = S.pathD('M0 0 C0 10 10 10 10 0 S20 -10 20 0', 0.1); ok('cubica + S', d[0].pts.length > 8 && Math.abs(d[0].pts[d[0].pts.length - 1].x - 20) < 1e-6);
+console.log('shapes tests: ' + pass + ' ok, ' + fail + ' falliti'); process.exit(fail ? 1 : 0);
